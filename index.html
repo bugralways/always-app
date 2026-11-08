@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f6f1">
+    <meta name="description" content="Yemek, alışveriş ve aktivite planını tek yerde düzenle.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <title>Haftam — yaşam planı</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Haftam ana sayfa">
+        <span class="brand-mark" aria-hidden="true">h</span>
+        <span>haftam</span>
+      </a>
+      <span class="privacy-note">Bilgilerin bu cihazda saklanır</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">KENDİ TEMPOYLA, KENDİ HAFTAN</p>
+        <h1>Haftanı biraz<br><span>daha kolaylaştır.</span></h1>
+        <p class="intro-copy">Bütçeni ve zamanını gir; sana uygun yemek, alışveriş ve hareket planını birlikte oluşturalım.</p>
+      </section>
+
+      <form id="profile-form" class="panel profile-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">1. ADIM</p>
+            <h2>Bu hafta nasıl geçiyor?</h2>
+          </div>
+          <span class="step-badge">01</span>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>Haftalık market bütçen</span>
+            <span class="input-wrap"><input id="budget" type="number" min="0" step="50" inputmode="decimal" placeholder="Örn. 2500" required><span>₺</span></span>
+            <small>Yaklaşık tutar yeterli.</small>
+          </label>
+          <div class="field">
+            <span>Mesai saatlerin</span>
+            <div class="time-pair">
+              <label class="sr-only" for="work-start">Mesai başlangıcı</label>
+              <input id="work-start" type="time" value="09:00" required>
+              <span class="time-separator">—</span>
+              <label class="sr-only" for="work-end">Mesai bitişi</label>
+              <input id="work-end" type="time" value="18:00" required>
+            </div>
+            <small>Plan önerilerinde dikkate alınır.</small>
+          </div>
+          <label class="field">
+            <span>Yemek hazırlığı için günde</span>
+            <span class="input-wrap"><input id="meal-time" type="number" min="10" max="240" step="5" value="30" required><span>dakika</span></span>
+          </label>
+          <label class="field">
+            <span>Hareket için günde</span>
+            <span class="input-wrap"><input id="activity-time" type="number" min="0" max="300" step="5" value="30" required><span>dakika</span></span>
+          </label>
+        </div>
+
+        <fieldset class="preferences">
+          <legend>Yemek tercihlerin</legend>
+          <p>Her satırda sana uyan seçeneği işaretle.</p>
+          <div class="choice-row">
+            <span>Vejetaryen besleniyorum</span>
+            <div class="segmented" role="group" aria-label="Vejetaryen beslenme tercihi">
+              <button type="button" class="choice" data-pref="vegetarian" data-value="yes" aria-pressed="false">Evet</button>
+              <button type="button" class="choice selected" data-pref="vegetarian" data-value="no" aria-pressed="true">Hayır</button>
+            </div>
+          </div>
+          <div class="choice-row">
+            <span>Süt ürünü tüketmiyorum</span>
+            <div class="segmented" role="group" aria-label="Süt ürünü tercihi">
+              <button type="button" class="choice" data-pref="dairyFree" data-value="yes" aria-pressed="false">Evet</button>
+              <button type="button" class="choice selected" data-pref="dairyFree" data-value="no" aria-pressed="true">Hayır</button>
+            </div>
+          </div>
+          <div class="choice-row">
+            <span>Acılı yemekleri tercih ederim</span>
+            <div class="segmented" role="group" aria-label="Acılı yemek tercihi">
+              <button type="button" class="choice" data-pref="spicy" data-value="yes" aria-pressed="false">Evet</button>
+              <button type="button" class="choice selected" data-pref="spicy" data-value="no" aria-pressed="true">Hayır</button>
+            </div>
+          </div>
+        </fieldset>
+
+        <button class="primary-button" type="submit">Haftamı planla <span aria-hidden="true">↗</span></button>
+      </form>
+
+      <section id="results" class="results" hidden aria-live="polite">
+        <div class="section-heading results-heading">
+          <div>
+            <p class="eyebrow">2. ADIM</p>
+            <h2>Haftalık planın</h2>
+          </div>
+          <button id="edit-button" class="text-button" type="button">Bilgileri düzenle</button>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span class="summary-icon" aria-hidden="true">₺</span>
+            <p>Yaklaşık yemek bütçesi</p>
+            <strong id="cost-summary">—</strong>
+            <small id="budget-note"></small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-icon" aria-hidden="true">◷</span>
+            <p>Günlük hazırlık</p>
+            <strong id="time-summary">—</strong>
+            <small>Mesai aralığın aktivite notunda yer alır.</small>
+          </article>
+        </div>
+
+        <div class="results-grid">
+          <section class="panel result-panel">
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">YEMEK</p><h3>Akşam yemeklerin</h3></div>
+              <span aria-hidden="true">🍽</span>
+            </div>
+            <div id="meal-list" class="meal-list"></div>
+          </section>
+
+          <section class="panel result-panel">
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">ALIŞVERİŞ</p><h3>Liste ve aktiviteler</h3></div>
+              <span aria-hidden="true">✦</span>
+            </div>
+            <p class="estimate-warning">Bunlar güncel market verisi olmayan örnek tahminlerdir; satın almadan önce fiyatı kontrol et. Tutarlar yalnızca 7 akşam yemeğini kapsar, kahvaltı ve öğle yemeği dahil değildir.</p>
+            <ul id="shopping-list" class="shopping-list"></ul>
+            <div class="activity-block">
+              <h4>Hareket ve boş zaman</h4>
+              <p id="activity-suggestion"></p>
+              <small id="work-note"></small>
+            </div>
+          </section>
+        </div>
+        <button id="regenerate-button" class="secondary-button" type="button">Yeni plan öner</button>
+      </section>
+    </main>
+
+    <footer>
+      <span>Haftam</span>
+      <span>Planın senin; dilediğin zaman değiştirebilirsin.</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
